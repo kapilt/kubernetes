@@ -26,7 +26,7 @@ import (
 
 	"github.com/ghodss/yaml"
 
-	netutil "k8s.io/apimachinery/pkg/util/net"	
+	netutil "k8s.io/apimachinery/pkg/util/net"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
