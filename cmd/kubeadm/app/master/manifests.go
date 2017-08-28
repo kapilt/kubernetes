@@ -19,12 +19,14 @@ package master
 import (
 	"bytes"
 	"fmt"
+	"net"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/ghodss/yaml"
 
+	netutil "k8s.io/apimachinery/pkg/util/net"	
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -363,7 +365,10 @@ func getAPIServerCommand(cfg *kubeadmapi.MasterConfiguration, selfHosted bool, k
 	if selfHosted {
 		command = append(command, "--advertise-address=$(POD_IP)")
 	} else {
-		command = append(command, fmt.Sprintf("--advertise-address=%s", cfg.API.AdvertiseAddress))
+		ip, err := netutil.ChooseBindAddress(net.ParseIP(cfg.API.AdvertiseAddress))
+		if err == nil {
+			command = append(command, fmt.Sprintf("--advertise-address=%s", ip.String()))
+		}
 	}
 
 	// Check if the user decided to use an external etcd cluster

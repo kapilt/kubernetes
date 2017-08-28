@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"net"
 
+	netutil "k8s.io/apimachinery/pkg/util/net"	
 	setutil "k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/validation"
 	certutil "k8s.io/client-go/util/cert"
@@ -52,9 +53,9 @@ func CreatePKIAssets(cfg *kubeadmapi.MasterConfiguration) error {
 	altNames := getAltNames(cfg.APIServerCertSANs, cfg.NodeName, cfg.Networking.DNSDomain, svcSubnet)
 
 	// Append the address the API Server is advertising
-	ip, err := netutil.ChooseBindAddress(net.ParseIP(config.API.AdvertiseAddress))
+	ip, err := netutil.ChooseBindAddress(net.ParseIP(cfg.API.AdvertiseAddress))
 	if err == nil {
-		altNames.IPs = append(altNames.IPs, ip.String())
+		altNames.IPs = append(altNames.IPs, ip)
 	}
 
 	var caCert *x509.Certificate
