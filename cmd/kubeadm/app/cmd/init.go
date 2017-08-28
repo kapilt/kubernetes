@@ -195,6 +195,8 @@ func NewInit(cfgPath string, cfg *kubeadmapi.MasterConfiguration, skipPreFlight,
 		fmt.Println("[preflight] Skipping pre-flight checks")
 	}
 
+	fmt.Println(cfg.API.AdvertiseAddress)
+	fmt.Println("cmd init")
 	return &Init{cfg: cfg, skipTokenPrint: skipTokenPrint}, nil
 }
 
@@ -223,6 +225,8 @@ func (i *Init) Run(out io.Writer) error {
 	// PHASE 2: Generate kubeconfig files for the admin and the kubelet
 
 	masterEndpoint := fmt.Sprintf("https://%s:%d", i.cfg.API.AdvertiseAddress, i.cfg.API.BindPort)
+	fmt.Println(masterEndpoint)
+	fmt.Println("master endpoint ^")
 	err = kubeconfigphase.CreateInitKubeConfigFiles(masterEndpoint, i.cfg.CertificatesDir, kubeadmapi.GlobalEnvParams.KubernetesDir, i.cfg.NodeName)
 	if err != nil {
 		return err

@@ -50,8 +50,12 @@ func CreatePKIAssets(cfg *kubeadmapi.MasterConfiguration) error {
 
 	// Build the list of SANs
 	altNames := getAltNames(cfg.APIServerCertSANs, cfg.NodeName, cfg.Networking.DNSDomain, svcSubnet)
+
 	// Append the address the API Server is advertising
-	altNames.IPs = append(altNames.IPs, net.ParseIP(cfg.API.AdvertiseAddress))
+	ip, err := netutil.ChooseBindAddress(net.ParseIP(config.API.AdvertiseAddress))
+	if err == nil {
+		altNames.IPs = append(altNames.IPs, ip.String())
+	}
 
 	var caCert *x509.Certificate
 	var caKey *rsa.PrivateKey

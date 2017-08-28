@@ -18,9 +18,9 @@ package cmd
 
 import (
 	"fmt"
-	"net"
+//	"net"
 
-	netutil "k8s.io/apimachinery/pkg/util/net"
+//	netutil "k8s.io/apimachinery/pkg/util/net"
 	"k8s.io/apimachinery/pkg/util/sets"
 	kubeadmapi "k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm"
 	kubeadmconstants "k8s.io/kubernetes/cmd/kubeadm/app/constants"
@@ -35,11 +35,11 @@ func setInitDynamicDefaults(cfg *kubeadmapi.MasterConfiguration) error {
 
 	// Choose the right address for the API Server to advertise. If the advertise address is localhost or 0.0.0.0, the default interface's IP address is used
 	// This is the same logic as the API Server uses
-	ip, err := netutil.ChooseBindAddress(net.ParseIP(cfg.API.AdvertiseAddress))
-	if err != nil {
-		return err
-	}
-	cfg.API.AdvertiseAddress = ip.String()
+	// ip, err := netutil.ChooseBindAddress(net.ParseIP(cfg.API.AdvertiseAddress))
+	// if err != nil {
+	// return err
+	// }
+	// cfg.API.AdvertiseAddress = ip.String()
 
 	// Validate version argument
 	ver, err := kubeadmutil.KubernetesReleaseVersion(cfg.KubernetesVersion)

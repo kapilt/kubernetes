@@ -194,6 +194,7 @@ func (j *Join) Run(out io.Writer) error {
 	if err != nil {
 		return err
 	}
+
 	if err := kubeadmnode.ValidateAPIServer(client); err != nil {
 		return err
 	}
